@@ -79,7 +79,19 @@ export default class PlanetDock extends React.Component {
         >
           ♆
         </div>
-        <div className="dock-planet" />
+        <div className="dock-planet">
+          <input
+            type="range"
+            onChange={e => {
+              this.props.setLightIntensity(e.target.value);
+            }}
+            min="0"
+            max="6"
+            defaultValue="2"
+            className="slider"
+            id="rotation-speed-slider"
+          ></input>
+        </div>
         {/* </div> */}
       </div>
     );

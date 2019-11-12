@@ -10,10 +10,11 @@ class App extends React.Component {
   }
 
   planetInput = planet => {
-    // debugger;
-    console.log(planet);
-    console.log(this.planetarium);
     this.planetarium.updatePlanetMaterial(planet);
+  };
+
+  setLightIntensity = int => {
+    this.planetarium.setLightIntensity(int);
   };
 
   render() {
@@ -24,7 +25,10 @@ class App extends React.Component {
             this.planetarium = r;
           }}
         />
-        <PlanetDock planetInput={this.planetInput} />
+        <PlanetDock
+          planetInput={this.planetInput}
+          setLightIntensity={this.setLightIntensity}
+        />
       </div>
     );
   }

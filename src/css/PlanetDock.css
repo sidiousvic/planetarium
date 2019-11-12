@@ -1,17 +1,48 @@
 .PlanetDock {
   position: absolute;
+  top: 25%;
   width: 100px;
-  height: 300px;
-  color: white;
+  height: 50%;
+  color: black;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  border-radius: 7px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.dock-planet:hover {
+  transition: 0.09s linear;
+  color: white;
 }
 
 .dock-planet {
   min-height: 10px;
   cursor: pointer;
   height: 100%;
-  background: red;
+  background: #e41515;
   /* background: transparent; */
   font-size: 20pt;
+}
+
+#rotation-speed-slider {
+  width: 70%;
+  filter: invert(100%);
+}
+
+#rotation-speed-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #4caf50;
+  cursor: pointer;
+}
+
+#rotation-speed-slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #4caf50;
+  cursor: pointer;
 }

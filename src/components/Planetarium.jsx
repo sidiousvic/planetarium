@@ -10,7 +10,7 @@ class Planetarium extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activePlanet: 'uranus',
+      activePlanet: 'mars',
       renderer: {
         gamma: {
           gammaFactor: 1.8,
@@ -29,7 +29,7 @@ class Planetarium extends Component {
         position: { x: 0, y: 0, z: 40 },
         rotation: {}
       },
-      sun: {
+      light: {
         position: { x: 0.1, y: 0.4, z: 0.3 },
         intensity: 1
       },
@@ -144,6 +144,11 @@ class Planetarium extends Component {
     this.start();
   }
 
+  setLightIntensity = int => {
+    console.log('lol');
+    this.light.intensity = int;
+  };
+
   // LIFECYCLE METHODS
   componentDidMount() {
     // SET RENDER SIZES
@@ -170,15 +175,16 @@ class Planetarium extends Component {
     // UPDATE PLANET MATERIAL
     this.updatePlanetMaterial(this.state.activePlanet);
     //ADD LIGHTS
-    this.addLights('white', this.state.sun.intensity, this.state.sun.position);
+    this.addLights(
+      'white',
+      this.state.light.intensity,
+      this.state.light.position
+    );
     // LOAD OBJ this.loadObject(VSkull, 'skull');
   }
 
   componentDidUpdate() {
-    this.updatePlanetMaterial(this.state.activePlanet).then(material => {
-      console.log(material);
-      this.sphere.material = material;
-    });
+    this.updatePlanetMaterial(this.state.activePlanet);
   }
 
   componentWillUnmount() {
