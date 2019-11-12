@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import Threehouse from './Threehouse';
+import Planetarium from './Planetarium';
 
 function App() {
   return (
     <div className="App">
-      <Threehouse />
+      <Planetarium />
     </div>
   );
 }
