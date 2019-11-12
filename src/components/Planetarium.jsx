@@ -3,14 +3,14 @@ import OrbitControls from 'orbit-controls-es6';
 import React, { Component } from 'react';
 import * as THREE from 'three';
 import { OBJLoader } from 'three-obj-mtl-loader';
-import textures from './assets/3D/textures/planetTextures';
-const milkyWayBackground = require('./assets/3D/textures/milkyway.jpg');
+import textures from '../assets/3D/textures/planetTextures';
+const milkyWayBackground = require('../assets/3D/textures/milkyway.jpg');
 
 class Planetarium extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activePlanet: 'mars',
+      activePlanet: 'uranus',
       renderer: {
         gamma: {
           gammaFactor: 1.8,
@@ -59,8 +59,7 @@ class Planetarium extends Component {
           texture: textures.saturn.texture
         },
         uranus: {
-          texture: textures.uranus.texture,
-          bumpMap: textures.uranus.bumpMap
+          texture: textures.uranus.texture
         },
         neptune: {
           texture: textures.neptune.texture
@@ -79,7 +78,6 @@ class Planetarium extends Component {
     this.scene.background = new THREE.Color(color);
     if (this.state.activeBackground) {
       const background = this.state.backgrounds[this.state.activeBackground];
-      console.log(background);
       this.scene.background = new THREE.TextureLoader().load(background);
     }
   };
@@ -119,10 +117,14 @@ class Planetarium extends Component {
     const texture = this.state.materials[planet].texture;
     const bumpMap = this.state.materials[planet].bumpMap;
     let material = new THREE.MeshPhongMaterial();
-    const planetTexture = new THREE.TextureLoader().load(texture);
+    const planetTexture = new THREE.TextureLoader().load(texture, () => {
+      console.log('Texture loaded');
+    });
     planetTexture.anisotropy = this.renderer.getMaxAnisotropy();
     material.map = planetTexture;
-    material.bumpMap = new THREE.TextureLoader().load(bumpMap);
+    material.bumpMap = new THREE.TextureLoader().load(bumpMap, () => {
+      console.log('Bump map loaded');
+    });
     material.bumpScale = this.state.materials[planet].bumpScale;
     this.sphere.material = material;
   };
@@ -173,7 +175,10 @@ class Planetarium extends Component {
   }
 
   componentDidUpdate() {
-    this.updatePlanetMaterial(this.state.activePlanet);
+    this.updatePlanetMaterial(this.state.activePlanet).then(material => {
+      console.log(material);
+      this.sphere.material = material;
+    });
   }
 
   componentWillUnmount() {
