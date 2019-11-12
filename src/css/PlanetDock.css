@@ -1,16 +1,42 @@
 .PlanetDock {
   position: absolute;
-  top: 25%;
-  width: 150px;
-  height: 50%;
-  color: rgba(255, 255, 255, 0.63);
+  bottom: 0%;
+  left: 10%;
+  width: 80%;
+  height: 10%;
+  color: rgba(204, 204, 204, 0.63);
+  background: #050505de;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: row;
   overflow: hidden;
-  border-radius: 7px;
-  border-top-left-radius: 0;
+  border-radius: 10px;
   border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
   user-select: none;
+}
+
+/* PLANET TITLE */
+#title {
+  font-family: Fira Code;
+  font-size: 90%;
+  min-width: 9%;
+}
+
+/* DOCK PLANET ICONS */
+.dock-planet {
+  display: table;
+  transition: 0.09s linear;
+  min-height: 10px;
+  cursor: pointer;
+  height: 100%;
+  font-size: 20pt;
+}
+
+.dock-planet p {
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .dock-planet:hover {
@@ -18,22 +44,10 @@
   color: whitesmoke;
 }
 
-.dock-planet {
-  transition: 0.09s linear;
-  min-height: 10px;
-  cursor: pointer;
-  height: 100%;
-  background: #0000009b;
-  font-size: 20pt;
-}
-
-#title {
-  font-family: Fira Code;
-  font-size: 90%;
-}
-
+/* SLIDERS */
 #rotation-speed-slider {
-  width: 50%;
+  width: 90%;
+  margin: 0 10% 0 10%;
   filter: invert(100%);
 }
 
@@ -57,6 +71,15 @@
   transform: none;
 }
 
+.emoji {
+  color: rgba(255, 255, 255, 0.918);
+  transition: 0.09s linear;
+}
+
+.emoji:hover {
+  color: white;
+}
+
 #rotation-speed-slider::-moz-range-thumb {
   width: 25px;
   height: 25px;
@@ -64,7 +87,6 @@
   cursor: pointer;
 }
 
-/* .tooltip {
-  position: absolute;
-  left: 10%;
-} */
+.rotation-emoji {
+  filter: hue-rotate(210deg);
+}
