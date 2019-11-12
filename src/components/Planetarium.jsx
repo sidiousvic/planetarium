@@ -33,6 +33,9 @@ class Planetarium extends Component {
         position: { x: 0.1, y: 0.4, z: 0.3 },
         intensity: 1
       },
+      rotation: {
+        speed: 0.001
+      },
       materials: {
         mercury: {
           texture: textures.mercury.texture,
@@ -145,8 +148,11 @@ class Planetarium extends Component {
   }
 
   setLightIntensity = int => {
-    console.log('lol');
-    this.light.intensity = int;
+    this.light.intensity = int / 100;
+  };
+
+  setRotationSpeed = int => {
+    this.state.rotation.speed = int / 10000;
   };
 
   // LIFECYCLE METHODS
@@ -205,7 +211,7 @@ class Planetarium extends Component {
     cancelAnimationFrame(this.frameId);
   };
   animate = () => {
-    this.sphere.rotation.y += 0.001;
+    this.sphere.rotation.y += this.state.rotation.speed;
     this.frameId = window.requestAnimationFrame(this.animate);
     this.renderScene();
   };
