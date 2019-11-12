@@ -138,7 +138,7 @@ export default class PlanetDock extends React.Component {
               this.props.setRotationSpeed(e.target.value);
             }}
             min="0"
-            max="200"
+            max="1000"
             defaultValue="100"
             className="slider"
             id="rotation-speed-slider"
