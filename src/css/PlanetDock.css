@@ -1,0 +1,17 @@
+.PlanetDock {
+  position: absolute;
+  width: 100px;
+  height: 300px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.dock-planet {
+  min-height: 10px;
+  cursor: pointer;
+  height: 100%;
+  background: red;
+  /* background: transparent; */
+  font-size: 20pt;
+}
