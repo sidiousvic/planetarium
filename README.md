@@ -1,8 +1,8 @@
-## PLANETARIUM
+## Planetarium 🌒
 
-## An app for planet-gazing 🌒, made in [React](https://reactjs.org/) and [Three.js](https://threejs.org/).
+### An app for planet-gazing 🌌, made in [React](https://reactjs.org/) and [Three.js](https://threejs.org/).
 
-## [Planetarium on Heroku](https://sidiousvic-planetarium.herokuapp.com/) 💫
+### [Planetarium](https://sidiousvic-planetarium.herokuapp.com/) on Heroku 💫
 
 <br></br>
 <img src="./public/screen.png"></img>
