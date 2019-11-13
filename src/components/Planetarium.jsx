@@ -10,6 +10,7 @@ class Planetarium extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      initialized: false,
       activePlanet: 'mars',
       renderer: {
         gamma: {
@@ -48,6 +49,8 @@ class Planetarium extends Component {
         earth: {
           texture: textures.earth.texture,
           bumpMap: textures.earth.bumpMap,
+          cloudTexture: textures.earth.cloudTexture,
+          specularMap: textures.earth.specularMap,
           bumpScale: 0.03
         },
         mars: {
@@ -59,7 +62,8 @@ class Planetarium extends Component {
           texture: textures.jupiter.texture
         },
         saturn: {
-          texture: textures.saturn.texture
+          texture: textures.saturn.texture,
+          ringTexture: textures.saturn.ringTexture
         },
         uranus: {
           texture: textures.uranus.texture
@@ -93,6 +97,7 @@ class Planetarium extends Component {
 
   addControls = (max, min) => {
     const controls = new OrbitControls(this.camera, this.mount);
+    this.controls = controls;
     controls.enabled = true;
     controls.maxDistance = max;
     controls.minDistance = min;
@@ -115,21 +120,63 @@ class Planetarium extends Component {
     this.scene.add(this.sphere);
   };
 
+  createSaturnRings = () => {
+    // CREATE GEOMETRIES
+    const innerRingGeometry = new THREE.RingBufferGeometry(20, 23, 200, 100);
+    const outerRingGeometry = new THREE.RingBufferGeometry(12, 19.8, 200, 100);
+    // CREATE MESHES
+    this.innerRing = new THREE.Mesh(innerRingGeometry);
+    this.outerRing = new THREE.Mesh(outerRingGeometry);
+    // CREATE MATERIAL AND ADD TEXTURES
+    let material = new THREE.MeshToonMaterial({
+      color: 'dimgray'
+      // wireframeLinewidth: 0.1,
+      // wireframe: true
+    });
+    const texture = this.state.materials.saturn.ringTexture;
+    const ringTexture = new THREE.TextureLoader().load(texture, () => {
+      console.log('Texture loaded');
+    });
+    ringTexture.anisotropy = this.renderer.getMaxAnisotropy();
+    material.map = ringTexture;
+    // ADD MATERIAL TO RINGS
+    this.innerRing.material = material;
+    this.outerRing.material = material;
+    // ADD ROTATION
+    this.innerRing.rotation.set(29.9, -0.03, 0.7);
+    this.outerRing.rotation.set(29.9, -0.03, 0.7);
+  };
+
   updatePlanetMaterial = planet => {
+    // RENDER THE FIRST TIME NO MATTER WHAT
+    if (this.state.initialized && this.state.activePlanet === planet) return;
+    // IF PLANET MATERIALS DO NOT EXIST, RETURN
     if (!this.state.materials[planet]) return;
+    // CREATE MATERIALS
+    let material = new THREE.MeshPhongMaterial();
+    // CREATE TEXTURES, BUMP MAP, SPECULAR
     const texture = this.state.materials[planet].texture;
     const bumpMap = this.state.materials[planet].bumpMap;
-    let material = new THREE.MeshPhongMaterial();
+    // const cloudTexture = this.state.materials[planet].cloudTexture;
+    // const specularMap = this.state.materials[planet].specularMap;
     const planetTexture = new THREE.TextureLoader().load(texture, () => {
       console.log('Texture loaded');
     });
     planetTexture.anisotropy = this.renderer.getMaxAnisotropy();
+    // ADD TEXTURES AND MAPS TO MATERIALS
     material.map = planetTexture;
     material.bumpMap = new THREE.TextureLoader().load(bumpMap, () => {
       console.log('Bump map loaded');
     });
     material.bumpScale = this.state.materials[planet].bumpScale;
+    // if (planet === 'earth') {
+    //   material.specularMap = THREE.ImageUtils.loadTexture(specularMap);
+    //   material.specular = new THREE.Color('white');
+    // }
+    // ADD MATERIAL TO SPHERE
     this.sphere.material = material;
+    // UPDATE ACTIVE PLANET
+    this.setState({ activePlanet: planet, initialized: true });
   };
 
   updateSceneBackground = (color, background) => {
@@ -155,6 +202,12 @@ class Planetarium extends Component {
     this.state.rotation.speed = int / 10000;
   };
 
+  addSaturnRings = () => {
+    if (this.state.activePlanet === 'saturn')
+      this.scene.add(this.innerRing, this.outerRing);
+    else this.scene.remove(this.innerRing, this.outerRing);
+  };
+
   // LIFECYCLE METHODS
   componentDidMount() {
     // SET RENDER SIZES
@@ -178,6 +231,8 @@ class Planetarium extends Component {
 
     // CREATE PLANET
     this.createPlanet();
+    // CREATE SATURN RINGS
+    this.createSaturnRings();
     // UPDATE PLANET MATERIAL
     this.updatePlanetMaterial(this.state.activePlanet);
     //ADD LIGHTS
@@ -191,6 +246,7 @@ class Planetarium extends Component {
 
   componentDidUpdate() {
     this.updatePlanetMaterial(this.state.activePlanet);
+    this.addSaturnRings();
   }
 
   componentWillUnmount() {
@@ -212,6 +268,8 @@ class Planetarium extends Component {
   };
   animate = () => {
     this.sphere.rotation.y += this.state.rotation.speed;
+    this.innerRing.rotation.z += 0.0005;
+    this.outerRing.rotation.z += 0.0009;
     this.frameId = window.requestAnimationFrame(this.animate);
     this.renderScene();
   };
@@ -257,7 +315,6 @@ class Planetarium extends Component {
   render() {
     return (
       <div
-        onClick={() => {}}
         className="Planetarium"
         style={{ width: '100vw', height: '100vh' }}
         ref={mount => {
