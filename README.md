@@ -1,9 +1,22 @@
 ## PLANETARIUM
 
-## An app for planet-gazing. 🌒
+## An app for planet-gazing 🌒, made in [React](https://reactjs.org/) and [Three.js](https://threejs.org/).
 
-### [Try it on Heroku](https://sidiousvic-planetarium.herokuapp.com/) 💫
+## [Planetarium on Heroku](https://sidiousvic-planetarium.herokuapp.com/) 💫
 
+<br></br>
 <img src="./public/screen.png"></img>
+<br></br>
+<br></br>
 
-by [sidiousvic](https://github.com/sidiousvic)
+## Click and drag to move a planet. ✋🏼
+
+<img src="./public/grab-screen.gif"></img>
+<br></br>
+<br></br>
+
+## Scroll to zoom in and out. 🔍
+
+<img src="./public/zoom-screen.gif"></img>
+
+built by [sidiousvic](https://github.com/sidiousvic)
