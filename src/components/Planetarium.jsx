@@ -142,6 +142,8 @@ class Planetarium extends Component {
     // ADD MATERIAL TO RINGS
     this.innerRing.material = material;
     this.outerRing.material = material;
+    this.innerRing.material.side = THREE.DoubleSide;
+
     // ADD ROTATION
     this.innerRing.rotation.set(29.9, -0.03, 0.7);
     this.outerRing.rotation.set(29.9, -0.03, 0.7);
