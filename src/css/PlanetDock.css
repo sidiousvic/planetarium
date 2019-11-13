@@ -104,6 +104,11 @@
     font-size: 10px;
   }
   .dock-planet {
-    width: 5%;
+    width: 8%;
+    height: 50%;
+  }
+
+  .slider {
+    width: 40%;
   }
 }
