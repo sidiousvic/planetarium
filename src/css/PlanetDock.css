@@ -90,3 +90,20 @@
 .rotation-emoji {
   filter: hue-rotate(210deg);
 }
+
+@media screen and (max-width: 700px) {
+  .PlanetDock {
+    width: 100%;
+    left: 0;
+    flex-wrap: wrap;
+  }
+  #title {
+    width: 5%;
+  }
+  .dock-planet p {
+    font-size: 10px;
+  }
+  .dock-planet {
+    width: 5%;
+  }
+}
