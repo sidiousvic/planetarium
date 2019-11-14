@@ -230,8 +230,8 @@ class Planetarium extends Component {
     this.start();
   }
 
-  setLightIntensity = int => {
-    this.light.intensity = int / 100;
+  setLightAngle = int => {
+    this.light.position.y = int / 1000;
   };
 
   setRotationSpeed = int => {

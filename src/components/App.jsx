@@ -13,8 +13,8 @@ class App extends React.Component {
     this.planetarium.updatePlanetMaterial(planet);
   };
 
-  setLightIntensity = int => {
-    this.planetarium.setLightIntensity(int);
+  setLightAngle = int => {
+    this.planetarium.setLightAngle(int);
   };
 
   setRotationSpeed = int => {
@@ -53,7 +53,7 @@ class App extends React.Component {
         />
         <PlanetDock
           planetInput={this.planetInput}
-          setLightIntensity={this.setLightIntensity}
+          setLightAngle={this.setLightAngle}
           setRotationSpeed={this.setRotationSpeed}
         />
       </div>

@@ -45,13 +45,13 @@
 }
 
 /* SLIDERS */
-#rotation-speed-slider {
+#adjustement-slider {
   width: 90%;
   margin: 0 10% 0 10%;
   filter: invert(100%);
 }
 
-#rotation-speed-slider::-webkit-slider-thumb {
+#adjustement-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 25px;
@@ -80,7 +80,7 @@
   color: white;
 }
 
-#rotation-speed-slider::-moz-range-thumb {
+#adjustement-slider::-moz-range-thumb {
   width: 25px;
   height: 25px;
   background: #4caf50;

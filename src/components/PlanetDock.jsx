@@ -121,13 +121,13 @@ export default class PlanetDock extends React.Component {
           <input
             type="range"
             onChange={e => {
-              this.props.setLightIntensity(e.target.value);
+              this.props.setLightAngle(e.target.value);
             }}
-            min="0"
-            max="200"
-            defaultValue="100"
+            min="-2000"
+            max="2000"
+            defaultValue="200"
             className="slider"
-            id="rotation-speed-slider"
+            id="adjustement-slider"
           ></input>{' '}
         </div>
         <div className="dock-planet slider">
@@ -138,10 +138,10 @@ export default class PlanetDock extends React.Component {
               this.props.setRotationSpeed(e.target.value);
             }}
             min="0"
-            max="1000"
-            defaultValue="100"
+            max="200"
+            defaultValue="10"
             className="slider"
-            id="rotation-speed-slider"
+            id="adjustement-slider"
           ></input>{' '}
         </div>
         {/* </div> */}
