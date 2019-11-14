@@ -4,6 +4,7 @@ const venusTexture = require('./venusTexture.jpg');
 const earthTexture = require('./earthTexture.jpg');
 const earthCloudTexture = require('./earthCloudTexture.jpg');
 const earthSpecularMap = require('./earthSpecularMap.tif');
+const flatEarthTexture = require('./flatEarthTexture.jpg');
 const marsTexture = require('./marsTexture.jpg');
 const marsBumpMap = require('./marsBumpMap.png');
 const jupiterTexture = require('./jupiterTexture.jpg');
@@ -26,7 +27,8 @@ const textures = {
     texture: earthTexture,
     bumpMap: earthTexture,
     cloudTexture: earthCloudTexture,
-    specularMap: earthSpecularMap
+    specularMap: earthSpecularMap,
+    flatTexture: flatEarthTexture
   },
   mars: {
     texture: marsTexture,

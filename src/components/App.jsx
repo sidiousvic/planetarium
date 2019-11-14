@@ -21,9 +21,31 @@ class App extends React.Component {
     this.planetarium.setRotationSpeed(int);
   };
 
+  flattenEarth = () => {
+    this.planetarium.flattenEarth();
+  };
+
+  unFlattenEarth = () => {
+    this.planetarium.unFlattenEarth();
+  };
+
   render() {
+    // "THE EARTH IS FLAT; ANY FOOL CAN SEE THAT"
+    document.addEventListener('keydown', e => {
+      if (e.keyCode === 70) this.flattenEarth();
+    });
+    document.addEventListener('keyup', e => {
+      if (e.keyCode === 70) this.unFlattenEarth();
+    });
     return (
-      <div className="App">
+      <div
+        tabIndex="0"
+        className="App"
+        // onKeyDown={e => {
+        //   console.log(e.target);
+        // }}
+        // onKeyUp={this.unFlattenEarth}
+      >
         <Planetarium
           ref={r => {
             this.planetarium = r;

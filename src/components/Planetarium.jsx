@@ -12,6 +12,7 @@ class Planetarium extends Component {
     this.state = {
       initialized: false,
       activePlanet: 'mars',
+      flatEarth: false,
       renderer: {
         gamma: {
           gammaFactor: 1.8,
@@ -51,6 +52,7 @@ class Planetarium extends Component {
           bumpMap: textures.earth.bumpMap,
           cloudTexture: textures.earth.cloudTexture,
           specularMap: textures.earth.specularMap,
+          flatTexture: textures.earth.flatTexture,
           bumpScale: 0.03
         },
         mars: {
@@ -70,7 +72,6 @@ class Planetarium extends Component {
         },
         neptune: {
           texture: textures.neptune.texture
-          // bumpMap: textures.neptune.bumpMap
         }
       },
       activeBackground: 'milkyWay',
@@ -120,6 +121,42 @@ class Planetarium extends Component {
     this.scene.add(this.sphere);
   };
 
+  flattenEarth = () => {
+    if (this.disc && this.state.flatEarth) return;
+    console.log(
+      '"The earth is flat; any fool can see that."',
+      'https://www.youtube.com/watch?v=tC5RalYWZ5Y'
+    );
+    this.scene.remove(this.sphere);
+    const geometry = new THREE.CylinderBufferGeometry(
+      10,
+      10,
+      0.1,
+      100,
+      100,
+      false
+    );
+    this.disc = new THREE.Mesh(geometry);
+    this.disc.rotation.set(0.5, 0.9, 0.1);
+    let material = new THREE.MeshToonMaterial();
+    const texture = this.state.materials.earth.flatTexture;
+    const flatEarthtexture = new THREE.TextureLoader().load(texture, () => {
+      console.log('Texture loaded');
+    });
+    flatEarthtexture.anisotropy = this.renderer.getMaxAnisotropy();
+    material.map = flatEarthtexture;
+    this.disc.material = material;
+    this.scene.add(this.disc);
+    this.state.flatEarth = true;
+  };
+
+  unFlattenEarth = () => {
+    this.state.flatEarth = false;
+    this.scene.remove(this.disc);
+    this.state.flatEarth = false;
+    this.scene.add(this.sphere);
+  };
+
   createSaturnRings = () => {
     // CREATE GEOMETRIES
     const innerRingGeometry = new THREE.RingBufferGeometry(20, 23, 200, 100);
@@ -149,21 +186,21 @@ class Planetarium extends Component {
     this.outerRing.rotation.set(29.9, -0.03, 0.7);
   };
 
-  updatePlanetMaterial = planet => {
+  updatePlanetMaterial = (planet, flat) => {
     // RENDER THE FIRST TIME NO MATTER WHAT
-    if (this.state.initialized && this.state.activePlanet === planet) return;
+    if (this.state.initialized && this.state.activePlanet === planet && !flat)
+      return;
     // IF PLANET MATERIALS DO NOT EXIST, RETURN
     if (!this.state.materials[planet]) return;
     // CREATE MATERIALS
     let material = new THREE.MeshPhongMaterial();
-    // CREATE TEXTURES, BUMP MAP, SPECULAR
+    // CREATE TEXTURES, BUMP MAP
     const texture = this.state.materials[planet].texture;
     const bumpMap = this.state.materials[planet].bumpMap;
-    // const cloudTexture = this.state.materials[planet].cloudTexture;
-    // const specularMap = this.state.materials[planet].specularMap;
     const planetTexture = new THREE.TextureLoader().load(texture, () => {
       console.log('Texture loaded');
     });
+    // MAX ANISOTROPHY MAKES SH*T LOOK BETTER
     planetTexture.anisotropy = this.renderer.getMaxAnisotropy();
     // ADD TEXTURES AND MAPS TO MATERIALS
     material.map = planetTexture;
@@ -171,12 +208,9 @@ class Planetarium extends Component {
       console.log('Bump map loaded');
     });
     material.bumpScale = this.state.materials[planet].bumpScale;
-    // if (planet === 'earth') {
-    //   material.specularMap = THREE.ImageUtils.loadTexture(specularMap);
-    //   material.specular = new THREE.Color('white');
-    // }
     // ADD MATERIAL TO SPHERE
     this.sphere.material = material;
+    this.sphere.material.side = THREE.DoubleSide;
     // UPDATE ACTIVE PLANET
     this.setState({ activePlanet: planet, initialized: true });
   };
@@ -270,6 +304,7 @@ class Planetarium extends Component {
   };
   animate = () => {
     this.sphere.rotation.y += this.state.rotation.speed;
+    if (this.state.flatEarth) this.disc.rotation.y += this.state.rotation.speed;
     this.innerRing.rotation.z += 0.0005;
     this.outerRing.rotation.z += 0.0009;
     this.frameId = window.requestAnimationFrame(this.animate);
