@@ -1,114 +1,70 @@
-.PlanetDock {
+#planet-dock {
   position: absolute;
-  bottom: 0%;
-  left: 10%;
-  width: 80%;
-  height: 10%;
-  color: rgba(204, 204, 204, 0.63);
-  background: #050505de;
+  bottom: 0;
+  left: 0;
   display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  flex-direction: row;
-  overflow: hidden;
-  border-radius: 10px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  user-select: none;
-}
-
-/* PLANET TITLE */
-#title {
-  font-family: Fira Code;
-  font-size: 90%;
-  min-width: 9%;
-}
-
-/* DOCK PLANET ICONS */
-.dock-planet {
-  display: table;
-  transition: 0.09s linear;
-  min-height: 10px;
-  cursor: pointer;
-  height: 100%;
-  font-size: 20pt;
-}
-
-.dock-planet p {
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.dock-planet:hover {
-  transform: scale(1.1);
+  flex-direction: column;
   color: whitesmoke;
+  background: #000;
+  border-top: 1px solid #111;
 }
 
-/* SLIDERS */
-#adjustement-slider {
-  width: 90%;
-  margin: 0 10% 0 10%;
-  filter: invert(100%);
-}
-
-#adjustement-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 25px;
-  background: #4caf50;
-  cursor: pointer;
-}
-
-.slider {
+#planet-dock-top {
   display: flex;
-  flex-direction: row;
+  height: 5vh;
+  width: 100vw;
+}
+
+#planet-dock-bottom {
+  display: flex;
+  width: 100vw;
   align-items: center;
   justify-content: space-evenly;
 }
 
-.slider:hover {
-  transform: none;
+.planet-slider {
+  filter: invert(1) contrast(1) brightness(2) saturate(0);
+  display: flex;
+  gap: 1rem;
+  width: 50vw;
+  padding: 0 1rem;
 }
 
 .emoji {
-  color: rgba(255, 255, 255, 0.918);
-  transition: 0.09s linear;
+  filter: invert(1) hue-rotate(50deg);
 }
 
-.emoji:hover {
-  color: white;
-}
-
-#adjustement-slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
-  background: #4caf50;
+.slider {
   cursor: pointer;
+  width: 100%;
 }
 
-.rotation-emoji {
-  filter: hue-rotate(210deg);
+#active-planet {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20vw;
 }
 
-@media screen and (max-width: 700px) {
-  .PlanetDock {
-    width: 100%;
-    left: 0;
-    flex-wrap: wrap;
-  }
-  #title {
-    width: 5%;
-  }
+#planet-signs {
+  font-family: mono;
+  width: 80vw;
+  display: flex;
+  justify-content: space-evenly;
+  font-size: 2rem;
+}
+
+.dock-planet p {
+  margin: 0;
+}
+
+.dock-planet:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 500px) {
   .dock-planet p {
-    font-size: 10px;
-  }
-  .dock-planet {
-    width: 8%;
-    height: 50%;
-  }
-
-  .slider {
-    width: 40%;
+    font-size: 1.5rem;
   }
 }

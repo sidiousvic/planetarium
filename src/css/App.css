@@ -7,6 +7,8 @@
 }
 
 canvas:active {
+  max-width: 100vw;
+  max-height: 100vh;
   cursor: grabbing;
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
