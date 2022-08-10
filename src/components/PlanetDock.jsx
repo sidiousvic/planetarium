@@ -5,7 +5,7 @@ export default class PlanetDock extends React.Component {
   constructor() {
     super();
     this.state = {
-      activePlanet: 'Planets'
+      activePlanet: 'Planets',
     };
   }
   render() {
@@ -22,7 +22,7 @@ export default class PlanetDock extends React.Component {
         </div>
         <div
           id="mercury"
-          onClick={e => {
+          onClick={(e) => {
             this.props.planetInput(e.target.parentElement.id);
           }}
           onMouseOver={() => {
@@ -34,7 +34,7 @@ export default class PlanetDock extends React.Component {
         </div>
         <div
           id="venus"
-          onClick={e => {
+          onClick={(e) => {
             this.props.planetInput(e.target.parentElement.id);
           }}
           onMouseOver={() => {
@@ -46,7 +46,7 @@ export default class PlanetDock extends React.Component {
         </div>
         <div
           id="earth"
-          onClick={e => {
+          onClick={(e) => {
             this.props.planetInput(e.target.parentElement.id);
           }}
           onMouseOver={() => {
@@ -58,7 +58,7 @@ export default class PlanetDock extends React.Component {
         </div>
         <div
           id="mars"
-          onClick={e => {
+          onClick={(e) => {
             this.props.planetInput(e.target.parentElement.id);
           }}
           onMouseOver={() => {
@@ -70,7 +70,7 @@ export default class PlanetDock extends React.Component {
         </div>
         <div
           id="jupiter"
-          onClick={e => {
+          onClick={(e) => {
             this.props.planetInput(e.target.parentElement.id);
           }}
           onMouseOver={() => {
@@ -82,7 +82,7 @@ export default class PlanetDock extends React.Component {
         </div>
         <div
           id="saturn"
-          onClick={e => {
+          onClick={(e) => {
             this.props.planetInput(e.target.parentElement.id);
           }}
           onMouseOver={() => {
@@ -94,7 +94,7 @@ export default class PlanetDock extends React.Component {
         </div>
         <div
           id="uranus"
-          onClick={e => {
+          onClick={(e) => {
             this.props.planetInput(e.target.parentElement.id);
           }}
           onMouseOver={() => {
@@ -106,7 +106,7 @@ export default class PlanetDock extends React.Component {
         </div>
         <div
           id="neptune"
-          onClick={e => {
+          onClick={(e) => {
             this.props.planetInput(e.target.parentElement.id);
           }}
           onMouseOver={() => {
@@ -117,10 +117,10 @@ export default class PlanetDock extends React.Component {
           <p>♆</p>
         </div>
         <div className="dock-planet slider">
-          <p className="light-emoji emoji">🌞</p>
+          <p className="light-emoji emoji">☀️</p>
           <input
             type="range"
-            onChange={e => {
+            onChange={(e) => {
               this.props.setLightAngle(e.target.value);
             }}
             min="-2000"
@@ -128,13 +128,13 @@ export default class PlanetDock extends React.Component {
             defaultValue="200"
             className="slider"
             id="adjustement-slider"
-          ></input>{' '}
+          ></input>
         </div>
         <div className="dock-planet slider">
           <p className="rotation-emoji emoji">💫</p>
           <input
             type="range"
-            onChange={e => {
+            onChange={(e) => {
               this.props.setRotationSpeed(e.target.value);
             }}
             min="0"
