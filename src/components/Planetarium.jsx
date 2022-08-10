@@ -1,9 +1,8 @@
-// import * as VSkull from './assets/3D/vsskull.obj';
-import OrbitControls from 'orbit-controls-es6';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import React, { Component } from 'react';
 import * as THREE from 'three';
-import { OBJLoader } from 'three-obj-mtl-loader';
 import textures from '../assets/3D/textures/planetTextures';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 const milkyWayBackground = require('../assets/3D/textures/milkyway.jpg');
 
 class Planetarium extends Component {
@@ -17,35 +16,35 @@ class Planetarium extends Component {
         gamma: {
           gammaFactor: 1.8,
           gammaOutput: true,
-          gammaInput: true
-        }
+          gammaInput: true,
+        },
       },
       controls: {
         max: 100,
-        min: 20
+        min: 20,
       },
       camera: {
         fov: 35,
         near: 0.1,
         far: 100,
         position: { x: 0, y: 0, z: 40 },
-        rotation: {}
+        rotation: {},
       },
       light: {
         position: { x: 0.1, y: 0.4, z: 0.3 },
-        intensity: 1
+        intensity: 1,
       },
       rotation: {
-        speed: 0.001
+        speed: 0.001,
       },
       materials: {
         mercury: {
           texture: textures.mercury.texture,
           bumpMap: textures.mercury.bumpMap,
-          bumpScale: 0.1
+          bumpScale: 0.1,
         },
         venus: {
-          texture: textures.venus.texture
+          texture: textures.venus.texture,
         },
         earth: {
           texture: textures.earth.texture,
@@ -53,35 +52,35 @@ class Planetarium extends Component {
           cloudTexture: textures.earth.cloudTexture,
           specularMap: textures.earth.specularMap,
           flatTexture: textures.earth.flatTexture,
-          bumpScale: 0.03
+          bumpScale: 0.03,
         },
         mars: {
           texture: textures.mars.texture,
           bumpMap: textures.mars.texture,
-          bumpScale: 0.05
+          bumpScale: 0.05,
         },
         jupiter: {
-          texture: textures.jupiter.texture
+          texture: textures.jupiter.texture,
         },
         saturn: {
           texture: textures.saturn.texture,
-          ringTexture: textures.saturn.ringTexture
+          ringTexture: textures.saturn.ringTexture,
         },
         uranus: {
-          texture: textures.uranus.texture
+          texture: textures.uranus.texture,
         },
         neptune: {
-          texture: textures.neptune.texture
-        }
+          texture: textures.neptune.texture,
+        },
       },
       activeBackground: 'milkyWay',
       backgrounds: {
-        milkyWay: milkyWayBackground
-      }
+        milkyWay: milkyWayBackground,
+      },
     };
   }
 
-  createScene = color => {
+  createScene = (color) => {
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(color);
     if (this.state.activeBackground) {
@@ -166,7 +165,7 @@ class Planetarium extends Component {
     this.outerRing = new THREE.Mesh(outerRingGeometry);
     // CREATE MATERIAL AND ADD TEXTURES
     let material = new THREE.MeshToonMaterial({
-      color: 'dimgray'
+      color: 'dimgray',
       // wireframeLinewidth: 0.1,
       // wireframe: true
     });
@@ -174,7 +173,7 @@ class Planetarium extends Component {
     const ringTexture = new THREE.TextureLoader().load(texture, () => {
       console.log('Texture loaded');
     });
-    ringTexture.anisotropy = this.renderer.getMaxAnisotropy();
+    ringTexture.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
     material.map = ringTexture;
     // ADD MATERIAL TO RINGS
     this.innerRing.material = material;
@@ -201,7 +200,7 @@ class Planetarium extends Component {
       console.log('Texture loaded');
     });
     // MAX ANISOTROPHY MAKES SH*T LOOK BETTER
-    planetTexture.anisotropy = this.renderer.getMaxAnisotropy();
+    planetTexture.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
     // ADD TEXTURES AND MAPS TO MATERIALS
     material.map = planetTexture;
     material.bumpMap = new THREE.TextureLoader().load(bumpMap, () => {
@@ -230,11 +229,11 @@ class Planetarium extends Component {
     this.start();
   }
 
-  setLightAngle = int => {
+  setLightAngle = (int) => {
     this.light.position.y = int / 1000;
   };
 
-  setRotationSpeed = int => {
+  setRotationSpeed = (int) => {
     this.state.rotation.speed = int / 10000;
   };
 
@@ -295,7 +294,7 @@ class Planetarium extends Component {
     if (!this.frameId) {
       this.frameId = requestAnimationFrame(this.animate);
     }
-    window.addEventListener('resize', e => {
+    window.addEventListener('resize', (e) => {
       this.onWindowResize(e);
     });
   };
@@ -326,13 +325,13 @@ class Planetarium extends Component {
     const material = new THREE.MeshStandardMaterial({
       color: 'black',
       wireframeLinewidth: 0.1,
-      wireframe: true
+      wireframe: true,
     });
     const loader = new OBJLoader();
     loader.load(
       file,
-      object => {
-        object.traverse(child => {
+      (object) => {
+        object.traverse((child) => {
           if (child instanceof THREE.Mesh) {
             child.material = material;
           }
@@ -340,10 +339,10 @@ class Planetarium extends Component {
         scene.add(object);
         object.name = name;
       },
-      xhr => {
+      (xhr) => {
         console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
       },
-      error => {
+      (error) => {
         console.error(error, 'LOADING ERROR');
       }
     );
@@ -354,7 +353,7 @@ class Planetarium extends Component {
       <div
         className="Planetarium"
         style={{ width: '100vw', height: '100vh' }}
-        ref={mount => {
+        ref={(mount) => {
           this.mount = mount;
         }}
       />
