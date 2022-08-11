@@ -26,9 +26,9 @@ canvas:active {
 }
 
 #spinner {
-  filter: saturate(0);
+  filter: saturate(0) brightness(0.7) contrast(1.2);
   animation: spin ease-in-out 1s infinite;
-  font-size: 40px;
+  font-size: 30px;
   color: white;
 }
 
