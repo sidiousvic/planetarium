@@ -43,7 +43,7 @@ class App extends React.Component {
       <div tabIndex="0" className="App">
         {this.state.loadingTexture && (
           <div id="loading-overlay">
-            <div id="spinner">🪐</div>
+            <div id="spinner">🌒</div>
           </div>
         )}
         <Planetarium
