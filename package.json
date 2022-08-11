@@ -1,6 +1,7 @@
 {
   "name": "threejs-ccx-project",
   "version": "0.1.0",
+  "homepage": "https://sidiousvic.github.io/planetarium",
   "private": true,
   "dependencies": {
     "orbit-controls-es6": "^2.0.1",
@@ -15,6 +16,8 @@
     "three-obj-mtl-loader": "^1.0.3"
   },
   "scripts": {
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -35,5 +38,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
   }
 }
