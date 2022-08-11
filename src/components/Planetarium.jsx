@@ -134,7 +134,7 @@ class Planetarium extends Component {
     let material = new THREE.MeshToonMaterial();
     const texture = this.state.materials.earth.flatTexture;
     const flatEarthtexture = new THREE.TextureLoader().load(texture, () => {
-      console.log('Texture loaded');
+      // console.log('Texture loaded');
     });
     flatEarthtexture.anisotropy = this.renderer.getMaxAnisotropy();
     material.map = flatEarthtexture;

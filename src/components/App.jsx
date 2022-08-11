@@ -51,7 +51,6 @@ class App extends React.Component {
             this.setState({ ...this.state, loadingTexture: loading });
           }}
           ref={(r) => {
-            console.log(r);
             this.planetarium = r;
           }}
         />
