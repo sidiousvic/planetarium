@@ -13,3 +13,33 @@ canvas:active {
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
 }
+
+#loading-overlay {
+  position: absolute;
+  background-color: black;
+  opacity: 95%;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#spinner {
+  filter: saturate(0);
+  animation: spin ease-in-out 1s infinite;
+  font-size: 40px;
+  color: white;
+}
+
+@keyframes spin {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}

@@ -18,12 +18,15 @@ export default class PlanetDock extends React.Component {
       >
         <div id="planet-dock-top">
           <div id="active-planet">
-            <p>{this.state.activePlanet}</p>
+            <p>
+              {this.props.loadingTexture ? 'LOADING' : this.state.activePlanet}
+            </p>
           </div>
           <div id="planet-signs">
             <div
               id="mercury"
               onClick={(e) => {
+                console.log(this.props.loadingTexture);
                 this.props.planetInput(e.target.parentElement.id);
               }}
               onMouseOver={() => {

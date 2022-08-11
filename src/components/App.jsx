@@ -6,18 +6,21 @@ import PlanetDock from './PlanetDock';
 class App extends React.Component {
   constructor() {
     super();
-    this.planetarium = React.createRef();
+    this.planetarium = React.createRef(null);
+    this.state = {
+      loadingTexture: true,
+    };
   }
 
-  planetInput = planet => {
+  planetInput = (planet) => {
     this.planetarium.updatePlanetMaterial(planet);
   };
 
-  setLightAngle = int => {
+  setLightAngle = (int) => {
     this.planetarium.setLightAngle(int);
   };
 
-  setRotationSpeed = int => {
+  setRotationSpeed = (int) => {
     this.planetarium.setRotationSpeed(int);
   };
 
@@ -30,28 +33,30 @@ class App extends React.Component {
   };
 
   render() {
-    // "THE EARTH IS FLAT; ANY FOOL CAN SEE THAT"
-    document.addEventListener('keydown', e => {
+    document.addEventListener('keydown', (e) => {
       if (e.keyCode === 70) this.flattenEarth();
     });
-    document.addEventListener('keyup', e => {
+    document.addEventListener('keyup', (e) => {
       if (e.keyCode === 70) this.unFlattenEarth();
     });
     return (
-      <div
-        tabIndex="0"
-        className="App"
-        // onKeyDown={e => {
-        //   console.log(e.target);
-        // }}
-        // onKeyUp={this.unFlattenEarth}
-      >
+      <div tabIndex="0" className="App">
+        {this.state.loadingTexture && (
+          <div id="loading-overlay">
+            <div id="spinner">🪐</div>
+          </div>
+        )}
         <Planetarium
-          ref={r => {
+          onTextuteUpdate={(loading) => {
+            this.setState({ ...this.state, loadingTexture: loading });
+          }}
+          ref={(r) => {
+            console.log(r);
             this.planetarium = r;
           }}
         />
         <PlanetDock
+          loadingTexture={this.state.loadingTexture}
           planetInput={this.planetInput}
           setLightAngle={this.setLightAngle}
           setRotationSpeed={this.setRotationSpeed}

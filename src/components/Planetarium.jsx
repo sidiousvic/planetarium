@@ -4,7 +4,6 @@ import * as THREE from 'three';
 import textures from '../assets/3D/textures/planetTextures';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 const milkyWayBackground = require('../assets/3D/textures/milkyway.jpg');
-
 class Planetarium extends Component {
   constructor(props) {
     super(props);
@@ -12,9 +11,9 @@ class Planetarium extends Component {
       initialized: false,
       activePlanet: 'mars',
       flatEarth: false,
+      loadingTexture: true,
       renderer: {
         gamma: {
-          gammaFactor: 1.8,
           gammaOutput: true,
           gammaInput: true,
         },
@@ -79,7 +78,6 @@ class Planetarium extends Component {
       },
     };
   }
-
   createScene = (color) => {
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(color);
@@ -88,13 +86,11 @@ class Planetarium extends Component {
       this.scene.background = new THREE.TextureLoader().load(background);
     }
   };
-
   createCamera = (fov, aspect, near, far, pos) => {
     this.camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     this.camera.position.set(pos.x, pos.y, pos.z);
     this.camera.rotateOnAxis(new THREE.Vector3(0, 100, 0));
   };
-
   addControls = (max, min) => {
     const controls = new OrbitControls(this.camera, this.mount);
     this.controls = controls;
@@ -102,24 +98,20 @@ class Planetarium extends Component {
     controls.maxDistance = max;
     controls.minDistance = min;
   };
-
   createRenderer = (width, height, gamma) => {
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    // this.renderer.setClearColor(0x000000, 0);
-    this.renderer.gammaFactor = gamma.gammaFactor;
+    this.renderer.setClearColor(0x000000, 0);
     this.renderer.gammaOutput = gamma.gammaOutput;
     this.renderer.gammaInput = gamma.gammaInput;
     this.renderer.setSize(width, height);
     this.mount.appendChild(this.renderer.domElement);
   };
-
   createPlanet = () => {
     const geometry = new THREE.SphereBufferGeometry(10, 100, 100);
     this.sphere = new THREE.Mesh(geometry);
     this.sphere.rotation.set(0, 0, 0.1);
     this.scene.add(this.sphere);
   };
-
   flattenEarth = () => {
     if (this.disc && this.state.flatEarth) return;
     console.log(
@@ -148,72 +140,52 @@ class Planetarium extends Component {
     this.scene.add(this.disc);
     this.state.flatEarth = true;
   };
-
   unFlattenEarth = () => {
     this.state.flatEarth = false;
     this.scene.remove(this.disc);
     this.state.flatEarth = false;
     this.scene.add(this.sphere);
   };
-
   createSaturnRings = () => {
-    // CREATE GEOMETRIES
     const innerRingGeometry = new THREE.RingBufferGeometry(20, 23, 200, 100);
     const outerRingGeometry = new THREE.RingBufferGeometry(12, 19.8, 200, 100);
-    // CREATE MESHES
     this.innerRing = new THREE.Mesh(innerRingGeometry);
     this.outerRing = new THREE.Mesh(outerRingGeometry);
-    // CREATE MATERIAL AND ADD TEXTURES
     let material = new THREE.MeshToonMaterial({
       color: 'dimgray',
-      // wireframeLinewidth: 0.1,
-      // wireframe: true
     });
     const texture = this.state.materials.saturn.ringTexture;
-    const ringTexture = new THREE.TextureLoader().load(texture, () => {
-      console.log('Texture loaded');
-    });
+    const ringTexture = new THREE.TextureLoader().load(texture, () => {});
     ringTexture.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
     material.map = ringTexture;
-    // ADD MATERIAL TO RINGS
     this.innerRing.material = material;
     this.outerRing.material = material;
     this.innerRing.material.side = THREE.DoubleSide;
 
-    // ADD ROTATION
     this.innerRing.rotation.set(29.9, -0.03, 0.7);
     this.outerRing.rotation.set(29.9, -0.03, 0.7);
   };
-
   updatePlanetMaterial = (planet, flat) => {
-    // RENDER THE FIRST TIME NO MATTER WHAT
     if (this.state.initialized && this.state.activePlanet === planet && !flat)
       return;
-    // IF PLANET MATERIALS DO NOT EXIST, RETURN
     if (!this.state.materials[planet]) return;
-    // CREATE MATERIALS
     let material = new THREE.MeshPhongMaterial();
-    // CREATE TEXTURES, BUMP MAP
     const texture = this.state.materials[planet].texture;
     const bumpMap = this.state.materials[planet].bumpMap;
+    this.props.onTextuteUpdate(true);
     const planetTexture = new THREE.TextureLoader().load(texture, () => {
-      console.log('Texture loaded');
+      this.props.onTextuteUpdate(false);
     });
-    // MAX ANISOTROPHY MAKES SH*T LOOK BETTER
     planetTexture.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
-    // ADD TEXTURES AND MAPS TO MATERIALS
     material.map = planetTexture;
-    material.bumpMap = new THREE.TextureLoader().load(bumpMap, () => {
-      console.log('Bump map loaded');
-    });
-    material.bumpScale = this.state.materials[planet].bumpScale;
-    // ADD MATERIAL TO SPHERE
+    if (bumpMap) {
+      material.bumpMap = new THREE.TextureLoader().load(bumpMap, () => {});
+      material.bumpScale = this.state.materials[planet].bumpScale;
+    }
     this.sphere.material = material;
-    this.sphere.material.side = THREE.DoubleSide;
-    // UPDATE ACTIVE PLANET
+    // this.sphere.material.side = THREE.DoubleSide;
     this.setState({ activePlanet: planet, initialized: true });
   };
-
   updateSceneBackground = (color, background) => {
     if (color) this.scene.background = new THREE.Color(color);
     if (background)
@@ -221,37 +193,28 @@ class Planetarium extends Component {
         this.state.background[background]
       );
   };
-
   addLights(color, intensity, position) {
     this.light = new THREE.DirectionalLight(color, intensity);
     this.light.position.set(position.y, position.x, position.z);
     this.scene.add(this.light);
     this.start();
   }
-
   setLightAngle = (int) => {
     this.light.position.y = int / 1000;
   };
-
   setRotationSpeed = (int) => {
     this.state.rotation.speed = int / 10000;
   };
-
   addSaturnRings = () => {
     if (this.state.activePlanet === 'saturn')
       this.scene.add(this.innerRing, this.outerRing);
     else this.scene.remove(this.innerRing, this.outerRing);
   };
-
-  // LIFECYCLE METHODS
   componentDidMount() {
-    // SET RENDER SIZES
     const width = this.mount.clientWidth;
     const height = this.mount.clientHeight;
     const aspect = width / height;
-    // CREATE SCENE
     this.createScene(0x000000, 'milkyWay');
-    // CREATE CAMERA
     this.createCamera(
       this.state.fov,
       aspect,
@@ -259,37 +222,25 @@ class Planetarium extends Component {
       this.state.far,
       this.state.camera.position
     );
-    // ADD CONTROLS
     this.addControls(this.state.controls.max, this.state.controls.min);
-    // ADD RENDERER
     this.createRenderer(width, height, this.state.renderer.gamma);
-
-    // CREATE PLANET
     this.createPlanet();
-    // CREATE SATURN RINGS
     this.createSaturnRings();
-    // UPDATE PLANET MATERIAL
     this.updatePlanetMaterial(this.state.activePlanet);
-    //ADD LIGHTS
     this.addLights(
       'white',
       this.state.light.intensity,
       this.state.light.position
     );
-    // LOAD OBJ this.loadObject(VSkull, 'skull');
   }
-
   componentDidUpdate() {
     this.updatePlanetMaterial(this.state.activePlanet);
     this.addSaturnRings();
   }
-
   componentWillUnmount() {
     this.stop();
     this.mount.removeChild(this.renderer.domElement);
   }
-
-  // UTILITY FUNCTIONS
   start = () => {
     if (!this.frameId) {
       this.frameId = requestAnimationFrame(this.animate);
@@ -313,11 +264,8 @@ class Planetarium extends Component {
     this.renderer.render(this.scene, this.camera);
   };
   onWindowResize = () => {
-    // update aspect ratio
     this.camera.aspect = window.innerWidth / window.innerHeight;
-    // update frustum
     this.camera.updateProjectionMatrix();
-    // update renderer and canvas
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   };
   loadObject = (file, name) => {
@@ -347,7 +295,6 @@ class Planetarium extends Component {
       }
     );
   };
-
   render() {
     return (
       <div
