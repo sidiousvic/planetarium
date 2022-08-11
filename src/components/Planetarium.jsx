@@ -81,10 +81,12 @@ class Planetarium extends Component {
   createScene = (color) => {
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(color);
-    // if (this.state.activeBackground) {
-    // const background = this.state.backgrounds[this.state.activeBackground];
-    // this.scene.background = new THREE.TextureLoader().load(background);
-    // }
+    if (this.state.activeBackground) {
+      const background = this.state.backgrounds[this.state.activeBackground];
+      const texture = new THREE.TextureLoader().load(background);
+      texture.minFilter = THREE.LinearFilter;
+      this.scene.background = texture;
+    }
   };
   createCamera = (fov, aspect, near, far, pos) => {
     this.camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
