@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/planetarium/static/css/main.2598fb8a.css",
-    "main.js": "/planetarium/static/js/main.aeaa9e4f.js",
+    "main.js": "/planetarium/static/js/main.ab9fb78a.js",
     "static/media/saturnRingTexture.png": "/planetarium/static/media/saturnRingTexture.a3774bdfd95e173cac4f.png",
     "static/media/mercuryTexture.jpg": "/planetarium/static/media/mercuryTexture.b3bc4c353800a4a2a211.jpg",
     "static/media/earthCloudTexture.jpg": "/planetarium/static/media/earthCloudTexture.08fcd80007fae8fc7170.jpg",
@@ -18,10 +18,10 @@
     "static/media/uranusTexture.jpg": "/planetarium/static/media/uranusTexture.428ad3f979bd783a27d1.jpg",
     "index.html": "/planetarium/index.html",
     "main.2598fb8a.css.map": "/planetarium/static/css/main.2598fb8a.css.map",
-    "main.aeaa9e4f.js.map": "/planetarium/static/js/main.aeaa9e4f.js.map"
+    "main.ab9fb78a.js.map": "/planetarium/static/js/main.ab9fb78a.js.map"
   },
   "entrypoints": [
     "static/css/main.2598fb8a.css",
-    "static/js/main.aeaa9e4f.js"
+    "static/js/main.ab9fb78a.js"
   ]
 }
