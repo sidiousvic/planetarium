@@ -26,7 +26,7 @@ class Planetarium extends Component {
         fov: 35,
         near: 0.1,
         far: 100,
-        position: { x: 0, y: 0, z: 40 },
+        position: { x: 0, y: 0, z: window.innerWidth > 400 ? 45 : 55 },
         rotation: {},
       },
       light: {
@@ -112,6 +112,7 @@ class Planetarium extends Component {
     const geometry = new THREE.SphereBufferGeometry(10, 100, 100);
     this.sphere = new THREE.Mesh(geometry);
     this.sphere.rotation.set(0, 0, 0.1);
+    this.sphere.position.set(0, window.innerWidth > 400 ? 2 : 2.5, 0);
     this.scene.add(this.sphere);
   };
   flattenEarth = () => {

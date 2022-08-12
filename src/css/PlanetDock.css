@@ -24,7 +24,7 @@
 }
 
 .planet-slider {
-  filter: invert(1) contrast(1) brightness(2) saturate(0);
+  filter: contrast(1) brightness(3) saturate(0);
   display: flex;
   gap: 1rem;
   width: 50vw;
@@ -32,7 +32,7 @@
 }
 
 .emoji {
-  filter: invert(1) hue-rotate(50deg);
+  filter: hue-rotate(50deg);
 }
 
 .slider {
@@ -52,6 +52,7 @@
   font-family: mono;
   width: 80vw;
   display: flex;
+  align-items: center;
   justify-content: space-evenly;
   font-size: 2rem;
 }
@@ -64,8 +65,8 @@
   text-decoration: underline;
 }
 
-@media screen and (max-width: 500px) {
-  .dock-planet p {
-    font-size: 1.5rem;
+@media screen and (max-width: 400px) {
+  #planet-dock-top p {
+    font-size: 1rem;
   }
 }
