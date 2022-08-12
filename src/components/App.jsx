@@ -14,6 +14,7 @@ class App extends React.Component {
 
   planetInput = (planet) => {
     this.planetarium.updatePlanetMaterial(planet);
+    this.planetarium.updatePosition(planet);
   };
 
   setLightAngle = (int) => {
@@ -32,13 +33,16 @@ class App extends React.Component {
     this.planetarium.unFlattenEarth();
   };
 
-  render() {
+  componentDidMount() {
     document.addEventListener('keydown', (e) => {
       if (e.keyCode === 70) this.flattenEarth();
     });
     document.addEventListener('keyup', (e) => {
       if (e.keyCode === 70) this.unFlattenEarth();
     });
+  }
+
+  render() {
     return (
       <div tabIndex="0" className="App">
         {this.state.loadingTexture && (

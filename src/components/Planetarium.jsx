@@ -91,7 +91,6 @@ class Planetarium extends Component {
   createCamera = (fov, aspect, near, far, pos) => {
     this.camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     this.camera.position.set(pos.x, pos.y, pos.z);
-    this.camera.rotateOnAxis(new THREE.Vector3(0, 100, 0));
   };
   addControls = (max, min) => {
     const controls = new OrbitControls(this.camera, this.mount);
@@ -111,7 +110,7 @@ class Planetarium extends Component {
   createPlanet = () => {
     const geometry = new THREE.SphereBufferGeometry(10, 100, 100);
     this.sphere = new THREE.Mesh(geometry);
-    this.sphere.rotation.set(0, 0, 0.1);
+    this.sphere.rotation.set(0, 0, 0);
     this.sphere.position.set(0, window.innerWidth > 400 ? 2 : 2.5, 0);
     this.scene.add(this.sphere);
   };
@@ -122,6 +121,8 @@ class Planetarium extends Component {
       'https://www.youtube.com/watch?v=tC5RalYWZ5Y'
     );
     this.scene.remove(this.sphere);
+    this.scene.remove(this.innerRing);
+    this.scene.remove(this.outerRing);
     const geometry = new THREE.CylinderBufferGeometry(
       10,
       10,
@@ -137,7 +138,7 @@ class Planetarium extends Component {
     const flatEarthtexture = new THREE.TextureLoader().load(texture, () => {
       // console.log('Texture loaded');
     });
-    flatEarthtexture.anisotropy = this.renderer.getMaxAnisotropy();
+    flatEarthtexture.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
     material.map = flatEarthtexture;
     this.disc.material = material;
     this.scene.add(this.disc);
@@ -146,8 +147,11 @@ class Planetarium extends Component {
   unFlattenEarth = () => {
     this.state.flatEarth = false;
     this.scene.remove(this.disc);
-    this.state.flatEarth = false;
     this.scene.add(this.sphere);
+    if (this.state.activePlanet === 'saturn') {
+      this.scene.add(this.innerRing);
+      this.scene.add(this.outerRing);
+    }
   };
   createSaturnRings = () => {
     const innerRingGeometry = new THREE.RingBufferGeometry(20, 23, 200, 100);
@@ -164,9 +168,10 @@ class Planetarium extends Component {
     this.innerRing.material = material;
     this.outerRing.material = material;
     this.innerRing.material.side = THREE.DoubleSide;
-
-    this.innerRing.rotation.set(29.9, -0.03, 0.7);
-    this.outerRing.rotation.set(29.9, -0.03, 0.7);
+    this.innerRing.position.set(0, window.innerWidth > 400 ? 2 : 2.5, 0);
+    this.outerRing.position.set(0, window.innerWidth > 400 ? 2 : 2.5, 0);
+    this.innerRing.rotation.set(1.6, 0, 0);
+    this.outerRing.rotation.set(1.6, 0, 0);
   };
   updatePlanetMaterial = (planet, flat) => {
     if (this.state.initialized && this.state.activePlanet === planet && !flat)
@@ -236,9 +241,27 @@ class Planetarium extends Component {
       this.state.light.position
     );
   }
+  updatePosition(activePlanet) {
+    if (activePlanet === 'saturn') {
+      this.innerRing.rotation.set(1.7, 0, 0);
+      this.outerRing.rotation.set(1.7, 0, 0);
+      this.camera.position.set(0, 0, window.innerWidth > 400 ? 65 : 125);
+      this.sphere.rotation.set(0.2, 0, 0);
+    } else {
+      this.camera.position.set(0, 0, window.innerWidth > 400 ? 45 : 55);
+      this.sphere.rotation.set(0, 0, 0);
+      this.controls.update();
+    }
+  }
   componentDidUpdate() {
     this.updatePlanetMaterial(this.state.activePlanet);
     this.addSaturnRings();
+    if (this.state.activePlanet === 'saturn') {
+      this.innerRing.rotation.set(1.7, 0, 0);
+      this.outerRing.rotation.set(1.7, 0, 0);
+      this.sphere.rotation.set(0.2, 0, 0);
+      this.camera.position.set(0, 0, window.innerWidth > 400 ? 65 : 115);
+    } else this.camera.position.set(0, 0, window.innerWidth > 400 ? 45 : 55);
   }
   componentWillUnmount() {
     this.stop();
@@ -249,7 +272,10 @@ class Planetarium extends Component {
       this.frameId = requestAnimationFrame(this.animate);
     }
     window.addEventListener('resize', (e) => {
-      this.onWindowResize(e);
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.updatePosition(this.state.activePlanet);
     });
   };
   stop = () => {
@@ -265,11 +291,6 @@ class Planetarium extends Component {
   };
   renderScene = () => {
     this.renderer.render(this.scene, this.camera);
-  };
-  onWindowResize = () => {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
   };
   loadObject = (file, name) => {
     const scene = this.scene;
